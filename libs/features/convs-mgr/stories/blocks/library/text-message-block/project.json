@@ -1,4 +1,5 @@
 {
+  "name": "features-convs-mgr-stories-blocks-library-text-message-block",
   "projectType": "library",
   "sourceRoot": "libs/features/convs-mgr/stories/blocks/library/text-message-block/src",
   "prefix": "app",
@@ -6,7 +7,7 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/libs/features/convs-mgr/stories/blocks/library/text-message-block"
+        "{workspaceRoot}/coverage/libs/features/convs-mgr/stories/blocks/library/text-message-block"
       ],
       "options": {
         "jestConfig": "libs/features/convs-mgr/stories/blocks/library/text-message-block/jest.config.ts",

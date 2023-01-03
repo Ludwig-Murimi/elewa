@@ -1,4 +1,5 @@
 {
+  "name": "functions-base",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/functions/base/src",
   "projectType": "library",
@@ -12,7 +13,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/functions/base"],
+      "outputs": ["{workspaceRoot}/coverage/libs/functions/base"],
       "options": {
         "jestConfig": "libs/functions/base/jest.config.ts",
         "passWithNoTests": true

@@ -1,4 +1,5 @@
 {
+  "name": "functions-bot-engine-main",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/functions/bot-engine/main/src",
   "projectType": "library",
@@ -12,7 +13,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/functions/bot-engine/main"],
+      "outputs": ["{workspaceRoot}/coverage/libs/functions/bot-engine/main"],
       "options": {
         "jestConfig": "libs/functions/bot-engine/main/jest.config.ts",
         "passWithNoTests": true

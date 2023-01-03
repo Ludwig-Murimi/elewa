@@ -1,4 +1,5 @@
 {
+  "name": "features-convs-mgr-stories-editor",
   "projectType": "library",
   "sourceRoot": "libs/features/convs-mgr/stories/editor/src",
   "prefix": "convl",
@@ -6,7 +7,7 @@
     "test": {
       "executor": "@nrwl/jest:jest",
       "outputs": [
-        "coverage/libs/features/convs-mgr/stories/editor"
+        "{workspaceRoot}/coverage/libs/features/convs-mgr/stories/editor"
       ],
       "options": {
         "jestConfig": "libs/features/convs-mgr/stories/editor/jest.config.ts",

@@ -1,4 +1,5 @@
 {
+  "name": "model-convs-mgr-conversations-messages",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/model/convs-mgr/conversations/messages/src",
   "projectType": "library",
@@ -14,7 +15,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/model/convs-mgr/conversations/messages"],
+      "outputs": [
+        "{workspaceRoot}/coverage/libs/model/convs-mgr/conversations/messages"
+      ],
       "options": {
         "jestConfig": "libs/model/convs-mgr/conversations/messages/jest.config.ts",
         "passWithNoTests": true
