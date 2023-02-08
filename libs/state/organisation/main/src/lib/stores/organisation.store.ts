@@ -58,7 +58,7 @@ export class OrgStore extends DataStore<Organisation>
     if(!user.roles.admin)
     {
       // Default org has ID = User ID
-      q = q.where('id', '==', user.id);
+      q = q.where('id', '==', 'farmbetter');
     }
 
     return q;
