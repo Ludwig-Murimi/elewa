@@ -4,7 +4,8 @@ export interface StoryBlockVariable {
 }
 
 export enum VariableTypes {
-  String  = 1,
-  Number  = 2,
-  Array   = 3 
+  String                    = 1,
+  Number                    = 2,
+  Array                     = 3,
+  ArrayWithTypeAndValue     = 4
 }

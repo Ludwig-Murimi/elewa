@@ -1,8 +1,10 @@
 import { HandlerTools } from "@iote/cqrs";
 
 import { VariableTypes } from "@app/model/convs-mgr/stories/blocks/main";
+import { MessageTypes } from "@app/model/convs-mgr/functions";
 
 import { ActiveChannel } from "../../model/active-channel.service";
+
 
 export class ProcessInput<T>
 {
@@ -22,7 +24,7 @@ export class ProcessInput<T>
     this.savedInputs = await valuesRepo$.getDocumentById(`values`);
   }
 
-  async saveInput(orgId: string, endUserId: string, inputValue: T, type?: VariableTypes): Promise<boolean>
+  async saveInput(orgId: string, endUserId: string, inputValue: T, inputValueType: MessageTypes, type?: VariableTypes): Promise<boolean>
   {
     const variableType = type ? type : VariableTypes.String;
 
@@ -36,7 +38,7 @@ export class ProcessInput<T>
 
       // If no data has been saved, we go ahead and create the document
       if (!this.savedInputs) {
-        const updatedInputs = this.__updateInputs(this.savedInputs, inputValue, variableType);
+        const updatedInputs = this.__updateInputs(this.savedInputs, inputValue, inputValueType, variableType);
         const endUserIdArray =  endUserId.split('_');
         updatedInputs.phoneNumber = endUserIdArray[endUserIdArray.length - 1];
         updatedInputs.userId = endUserId;
@@ -44,7 +46,7 @@ export class ProcessInput<T>
         return valuesRepo$.create(updatedInputs, 'values');
       } else {
         // If the variable tagged already has a value, we create an array and push the new value
-        const updatedInputs = this.__updateInputs(this.savedInputs, inputValue, variableType);
+        const updatedInputs = this.__updateInputs(this.savedInputs, inputValue, inputValueType, variableType);
 
         await valuesRepo$.update(updatedInputs);
       }
@@ -55,12 +57,34 @@ export class ProcessInput<T>
     }
   }
 
-  private __updateInputs(savedInputs: any, value: T, variableType: VariableTypes ) {
+
+  private __updateInputs(savedInputs: any, value: T, inputValueType: MessageTypes, variableType: VariableTypes ) {
     const updatedInputs = savedInputs || {};
 
+    // If the input is a question, we change the type to text
+    if(inputValueType === MessageTypes.QUESTION) inputValueType = MessageTypes.TEXT;
+
     switch (variableType) {
+      case VariableTypes.ArrayWithTypeAndValue:
+        let variableObject = {};
+
+        variableObject = { 
+          value: value,
+          type: inputValueType
+        }
+
+        if(!updatedInputs[this.variableName]) { 
+
+          updatedInputs[this.variableName] = [variableObject];
+        } else {
+          updatedInputs[this.variableName].push(variableObject);
+        }
+
+        break;
+
       case VariableTypes.Array:
-        if(!updatedInputs[this.variableName]) {
+        if(!updatedInputs[this.variableName]) { 
+
           updatedInputs[this.variableName] = [value];
         } else {
           updatedInputs[this.variableName].push(value);
