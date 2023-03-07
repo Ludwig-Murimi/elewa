@@ -3,14 +3,12 @@
 
     <textarea id="message" name="message" formControlName="message" type="text" rows="3"></textarea>
 
-    <app-default-option-field [jsPlumb]="jsPlumb" [blockFormGroup]="listMessageBlock"></app-default-option-field>
-
     <div formArrayName="options" fxFlexFill>
       <div *ngFor="let listItem of listItems.controls; let i = index">
         <div [formGroupName]="i" class="inputList" fxLayout="row" fxLayoutALign="start center" fxFlex="100">
           <button (click)="deleteInput(i)" class="listgone"><i class="far fa-trash-alt"></i></button>
           <app-option-input-field [jsPlumb]="jsPlumb" [blockFormGroup]="listMessageBlock" [formGroupNameInput]="i"
-            class="input"></app-option-input-field>
+            class="input" [charMaxlength]="listOptionInputLimit"></app-option-input-field>
         </div>
       </div>
     </div>

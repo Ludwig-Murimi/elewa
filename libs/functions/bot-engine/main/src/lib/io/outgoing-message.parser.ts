@@ -1,4 +1,4 @@
-import { Message, OutgoingMessagePayload } from "@app/model/convs-mgr/conversations/messages";
+import { Message, MessageTemplateConfig, OutgoingMessagePayload } from "@app/model/convs-mgr/conversations/messages";
 import { StoryBlock, StoryBlockTypes } from "@app/model/convs-mgr/stories/blocks/main";
 
 /**
@@ -27,9 +27,11 @@ export abstract class OutgoingMessageParser
 
   abstract getListBlockParserOut     (storyBlock: StoryBlock, phone: string): any
 
+  abstract getMessageTemplateParserOut (templateConfig: MessageTemplateConfig, phone: string): any
+
   // abstract getStickerBlockParserOut  (storyBlock: StoryBlock, phone: string): Message
 
-  // abstract getDocumentBlockParserOut (storyBlock: StoryBlock, phone: string): Message
+  abstract getDocumentBlockParserOut (storyBlock: StoryBlock, phone: string): any
 
   // abstract getLocationBlockParserOut (storyBlock: StoryBlock, phone: string): Message
 
@@ -57,7 +59,7 @@ export abstract class OutgoingMessageParser
       case StoryBlockTypes.List:          parser = this.getListBlockParserOut;     break;
       case StoryBlockTypes.Image:         parser = this.getImageBlockParserOut;    break;
       case StoryBlockTypes.Video:         parser = this.getVideoBlockParserOut;    break;
-      // case StoryBlockTypes.Document:      parser = this.getDocumentBlockParserOut; break;
+      case StoryBlockTypes.Document:      parser = this.getDocumentBlockParserOut; break;
       case StoryBlockTypes.Audio:         parser = this.getAudioBlockParserOut;    break;
       // case StoryBlockTypes.Sticker:       parser = this.getStickerBlockParserOut;  break;
       default:
@@ -65,5 +67,9 @@ export abstract class OutgoingMessageParser
     }
 
     return parser(storyBlock, phone);
+  }
+
+  parseOutMessageTemplate(templateConfig: MessageTemplateConfig, phone: string) {
+    return this.getMessageTemplateParserOut(templateConfig, phone);
   }
 }

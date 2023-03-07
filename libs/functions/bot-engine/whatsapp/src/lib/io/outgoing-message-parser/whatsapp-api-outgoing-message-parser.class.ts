@@ -11,16 +11,20 @@ import
   MetaMessagingProducts,
   RecepientType,
   WhatsAppAudioMessage,
+  WhatsAppDocumentMessage,
   WhatsAppImageMessage,
   WhatsAppInteractiveMessage,
   WhatsAppMessageType,
+  WhatsAppTemplateMessage,
+  WhatsappTemplateParameter,
   WhatsAppTextMessage,
   WhatsAppVideoMessage,
 } from '@app/model/convs-mgr/functions';
 
-import { ImageMessageBlock, ListMessageBlock, QuestionMessageBlock, TextMessageBlock, VideoMessageBlock, VoiceMessageBlock } from '@app/model/convs-mgr/stories/blocks/messaging';
+import { DocumentMessageBlock, ImageMessageBlock, ListMessageBlock, QuestionMessageBlock, TextMessageBlock, VideoMessageBlock, VoiceMessageBlock } from '@app/model/convs-mgr/stories/blocks/messaging';
 
 import { OutgoingMessageParser } from '@app/functions/bot-engine';
+import { MessageTemplateConfig } from '@app/model/convs-mgr/conversations/messages';
 
 /**
  * Interprets messages received from whatsapp and converts them to a Message
@@ -241,33 +245,68 @@ export class WhatsappOutgoingMessageParser extends OutgoingMessageParser
     return generatedMessage;
   }
 
-  // getDocumentBlockParserOut(storyBlock: StoryBlock, phone: string) {
-  //   const documentBlock = storyBlock as DocumentMessageBlock
+  getDocumentBlockParserOut(storyBlock: StoryBlock, phone: string)
+  {
+    const documentBlock = storyBlock as DocumentMessageBlock;
+    
+    // Create the text payload which will be sent to api
+    const documentMessage = {
+      type: WhatsAppMessageType.DOCUMENT,
+      document: {
+        filename: documentBlock.message || "untitled",
+        link: documentBlock.fileSrc,
+      },
+    } as WhatsAppDocumentMessage;
 
-  //   // Create the text payload which will be sent to api
-  //   const mediaMessage = {
-  //     type: WhatsAppMessageType.DOCUMENT,
-  //     document: {
-  //       link: documentBlock.src,
-  //     },
-  //   } as WhatsAppDocumentMessage;
-
-  //   /**
-  //    * Add the required fields for the whatsapp api
-  //    * @see https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages
-  //    */
-  //   const generatedMessage: WhatsAppMessage = {
-  //     messaging_product: MetaMessagingProducts.WHATSAPP,
-  //     recepient_type: RecepientType.INDIVIDUAL,
-  //     to: phone,
-  //     type: WhatsAppMessageType.DOCUMENT,
-  //     ...mediaMessage,
-  //   };
-  //   return generatedMessage;
-  // }
+    /**
+     * Add the required fields for the whatsapp api
+     * @see https://developers.facebook.com/docs/whatsapp/cloud-api/guides/send-messages
+     */
+    const generatedMessage: WhatsAppDocumentMessage = {
+      messaging_product: MetaMessagingProducts.WHATSAPP,
+      recepient_type: RecepientType.INDIVIDUAL,
+      to: phone,
+      type: WhatsAppMessageType.DOCUMENT,
+      ...documentMessage,
+    };
+    return generatedMessage;
+  }
 
 
+  getMessageTemplateParserOut(templateConfig: MessageTemplateConfig, phone: string)
+  {
+    const { name, languageCode, params } = templateConfig;
 
+    const templateParams: WhatsappTemplateParameter[] = params.map((param) =>
+    {
+      return {
+        type: WhatsAppMessageType.TEXT,
+        text: param,
+      };
+    });
+
+    // Create the message template payload which will be sent to whatsapp
+    const messageTemplate: WhatsAppTemplateMessage = {
+      messaging_product: MetaMessagingProducts.WHATSAPP,
+      recepient_type: RecepientType.INDIVIDUAL,
+      to: phone,
+      type: WhatsAppMessageType.TEMPLATE,
+      template: {
+        name,
+        language: {
+          code: languageCode,
+        },
+        components: [
+          {
+            type: "body",
+            parameters: templateParams,
+          }
+        ]
+      }
+    };
+
+    return messageTemplate;
+  }
   // getStickerBlockParserOut(storyBlock: StoryBlock, phone: string) {
   //   // TODO: 
   //   let link: string;
