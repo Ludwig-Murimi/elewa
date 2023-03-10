@@ -20,7 +20,8 @@
     "enabel-elearning": {
       "hosting": {
         "convl-manager": [
-          "enabel-elearning"
+          "enabel-elearning",
+          "farmbetter-prod"
         ]
       }
     },
