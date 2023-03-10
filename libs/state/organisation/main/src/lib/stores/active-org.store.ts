@@ -36,8 +36,22 @@ export class ActiveOrgStore extends Store<Organisation>
       const org = orgs.find(o => o.id === orgId);
       if(org && this._activeOrg !== orgId)
       {
-        this._activeOrg = orgId;
-        this.set(org, 'UPDATE - FROM DB || ROUTE');
+        const org = orgs.find(o => (o as any).prio);
+        if(org && this._activeOrg !== org.id)
+        {
+          this._activeOrg = org.id as string;
+          this.set(org, 'UPDATE - FROM DB || ROUTE');
+        }
+      }
+      else {
+        const orgId = (user as User).id as string;
+
+        const org = orgs.find(o => o.id === orgId);
+        if(org && this._activeOrg !== orgId)
+        {
+          this._activeOrg = orgId;
+          this.set(org, 'UPDATE - FROM DB || ROUTE');
+        }
       }
 
       // const orgId = this._getRoute(route);

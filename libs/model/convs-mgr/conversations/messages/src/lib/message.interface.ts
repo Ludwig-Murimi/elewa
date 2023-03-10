@@ -79,7 +79,7 @@ export interface LocationMessage extends Message
 
 export interface FileMessage extends Message
 {
-  mediaId         : string;
+  mediaId?        : string;
   url?            : string;
   mime_type?      : string
 }
@@ -99,7 +99,7 @@ export interface QuestionMessage extends Message
 {
   questionText?       : string;
 
-  options             : QuestionMessageOptions[];
+  options?             : QuestionMessageOptions[];
 }
  
  export interface QuestionMessageOptions 
