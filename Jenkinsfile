@@ -5,7 +5,7 @@ pipeline {
     }
 
     environment {
-        FIREBASE_TOKEN = credentials('ENABEL_FIREBASE_TOKEN');
+        FIREBASE_TOKEN = credentials('FIREBASE_TOKEN');
         ENV_FILE_DEST = 'apps/conv-learning-manager/src/environments/environment.ts'
         ENV_FILE_DEST_PROD = 'apps/conv-learning-manager/src/environments/environment.prod.ts'
         }
@@ -38,7 +38,7 @@ pipeline {
         stage('Deploy to Farmbetter') { 
             steps {
 
-                sshagent(['github_jenkins_ssh']) {
+                sshagent(['jenkins_github']) {
                     sh 'git checkout farmbetter-private-dev'
                     sh 'git pull origin farmbetter-private-dev'
                     sh 'git merge origin/private-prod'
